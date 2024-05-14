@@ -53,7 +53,7 @@ export const ProductList = ({ route, navigation }) => {
                     <TouchableOpacity
                         style={styles.item}
                         onPress={() =>
-                            navigation.navigate("ProductDetail", {
+                            navigation.navigate("Product Detail", {
                                 productId: item.id.toString(),
                             })
                         }
@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
-        paddingVertical: 20,
+        paddingTop: 40,
+        paddingBottom: 20,
     },
     flatListContainer: {
         flex: 1,

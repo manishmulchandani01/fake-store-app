@@ -8,14 +8,17 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
 import { ScreenTitle } from "../components/ScreenTitle";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import { addItem } from "../store/cartSlice";
 
 export const ProductDetail = ({ route, navigation }) => {
     const { productId } = route.params;
     const [product, setProduct] = useState([]);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setLoading(true);
@@ -72,7 +75,10 @@ export const ProductDetail = ({ route, navigation }) => {
                         />
                         <Text style={styles.buttonText}>Back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.buttonContainer}
+                        onPress={() => dispatch(addItem(product))}
+                    >
                         <Ionicons
                             style={styles.buttonText}
                             name="cart"
@@ -96,7 +102,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
-        paddingVertical: 20,
+        paddingTop: 40,
+        paddingBottom: 20,
     },
     detailContainer: {
         width: "90%",
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     descriptionContainer: {
-        height: 200,
+        height: 130,
         backgroundColor: "#DEDEDE",
         borderWidth: 1,
         borderColor: "#000",

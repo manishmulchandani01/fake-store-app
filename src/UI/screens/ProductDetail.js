@@ -12,7 +12,7 @@ import { ScreenTitle } from "../components/ScreenTitle";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { addItem } from "../store/cartSlice";
+import { addItem } from "../../datamodel/redux/cartSlice";
 
 export const ProductDetail = ({ route, navigation }) => {
     const { productId } = route.params;
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
-        paddingTop: 40,
+        paddingTop: 60,
         paddingBottom: 20,
     },
     detailContainer: {

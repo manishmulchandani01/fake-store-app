@@ -8,7 +8,7 @@ import { updateUser } from "../../services/authService";
 import { setCredentials } from "../../datamodel/redux/authSlice";
 
 const UpdateForm = ({ formHandler }) => {
-    const { user, error } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const [name, setName] = useState(user?.name || "");
     const [password, setPassword] = useState("");
 
@@ -21,10 +21,8 @@ const UpdateForm = ({ formHandler }) => {
     useEffect(() => {
         if (user?.status === "error") {
             showErrorAlert(user?.message);
-        } else if (error) {
-            showErrorAlert(error);
         }
-    }, [user, error]);
+    }, [user]);
 
     const submitHandler = async () => {
         const data = await updateUser(user?.token, name, password);

@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { addItem } from "../../datamodel/redux/cartSlice";
+import { getProductById } from "../../datamodel/products";
 
 export const ProductDetail = ({ route, navigation }) => {
     const { productId } = route.params;
@@ -21,18 +22,15 @@ export const ProductDetail = ({ route, navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setLoading(true);
-        fetch(`https://fakestoreapi.com/products/${productId}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setProduct(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                setLoading(false);
-            });
-    }, []);
+        const fetchProduct = async () => {
+            setLoading(true);
+            const data = await getProductById(productId);
+            setProduct(data);
+            setLoading(false);
+        };
+
+        fetchProduct();
+    }, [productId]);
 
     if (loading) {
         return (

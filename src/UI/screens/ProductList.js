@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { ScreenTitle } from "../components/ScreenTitle";
 import { useState, useEffect } from "react";
+import { getProductsByCategory } from "../../datamodel/categories";
 
 export const ProductList = ({ route, navigation }) => {
     const { category } = route.params;
@@ -18,21 +19,14 @@ export const ProductList = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(
-            `https://fakestoreapi.com/products/category/${encodeURIComponent(
-                category
-            )}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setProducts(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                setLoading(false);
-            });
+        const fetchProducts = async () => {
+            setLoading(true);
+            const products = await getProductsByCategory(category);
+            setProducts(products);
+            setLoading(false);
+        };
+
+        fetchProducts();
     }, [category]);
 
     if (loading) {

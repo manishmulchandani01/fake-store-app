@@ -4,12 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { signOut } from "../../datamodel/redux/authSlice";
 import { clearCart } from "../../datamodel/redux/cartSlice";
+import { clearOrders } from "../../datamodel/redux/orderSlice";
 
 const ProfileDetail = ({ user, formHandler }) => {
     const dispatch = useDispatch();
 
     const signOutHandler = () => {
         dispatch(clearCart());
+        dispatch(clearOrders());
         dispatch(signOut());
     };
 

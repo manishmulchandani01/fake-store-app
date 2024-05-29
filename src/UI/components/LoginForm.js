@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { colors } from "../../constants/colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCredentials } from "../../datamodel/redux/authSlice";
 import { Input } from "../components/Input";
 import Button from "../components/Button";
 import { signInUser, signUpUser } from "../../services/authService";
 import { fillCart } from "../../datamodel/redux/cartSlice";
 import { fetchCartItems } from "../../services/cartService";
+import { fetchOrders } from "../../services/orderService";
+import { fillOrders } from "../../datamodel/redux/orderSlice";
 
 const signInTexts = {
     title: "Sign in with email and password",
@@ -63,6 +65,15 @@ const LoginForm = () => {
         }
     };
 
+    const restoreOrders = async (token) => {
+        const data = await fetchOrders(token);
+        if (data.status === "OK") {
+            dispatch(fillOrders({ orders: data.orders }));
+        } else {
+            Alert.alert(data.message);
+        }
+    };
+
     const submitHandler = async () => {
         const { name, email, password } = inputs;
         const data = isSignIn
@@ -78,6 +89,7 @@ const LoginForm = () => {
                 })
             );
             await restoreCart(data.token);
+            await restoreOrders(data.token);
         } else {
             Alert.alert(data.message);
         }

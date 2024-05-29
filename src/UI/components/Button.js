@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingHorizontal: 12,
         backgroundColor: colors.primary500,
-        elevation: 2, // for android. shadow sections are for ios
+        elevation: 2,
         shadowColor: colors.primary800,
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.25,

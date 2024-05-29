@@ -12,11 +12,11 @@ import { getProductById } from "../../datamodel/products";
 import { useSelector, useDispatch } from "react-redux";
 import { addItem, removeItem } from "../../datamodel/redux/cartSlice";
 
-const CartRow = ({ id }) => {
+const CartRow = ({ id, displayOnly, quantity }) => {
     const dispatch = useDispatch();
 
-    const itms = useSelector((state) => state.cart.items.items);
-    const itm = itms.find((itm) => itm.id === id);
+    const itms = useSelector((state) => state?.cart?.items?.items);
+    const itm = itms?.find((itm) => itm.id === id);
     const count = itm?.count ?? 0;
 
     const [product, setProduct] = useState(null);
@@ -55,41 +55,48 @@ const CartRow = ({ id }) => {
                         />
                         <View style={styles.controlContainer}>
                             <View style={styles.productDetails}>
-                                <View>
-                                    <Text style={styles.productTitle}>
-                                        {product.title}
-                                    </Text>
+                                <Text style={styles.productTitle}>
+                                    {product.title}
+                                </Text>
+                                <View style={styles.fetchedDetails}>
                                     <Text style={styles.productPrice}>
                                         ${product.price.toFixed(2)}
                                     </Text>
+                                    {displayOnly && (
+                                        <Text style={styles.productPrice}>
+                                            Quantity: {quantity}
+                                        </Text>
+                                    )}
                                 </View>
-                                <View style={styles.cartControls}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            dispatch(removeItem(product))
-                                        }
-                                    >
-                                        <Ionicons
-                                            name="remove-circle"
-                                            size={24}
-                                            color={"red"}
-                                        />
-                                    </TouchableOpacity>
-                                    <Text style={styles.qtyText}>
-                                        quantity: {count}
-                                    </Text>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            dispatch(addItem(product))
-                                        }
-                                    >
-                                        <Ionicons
-                                            name="add-circle"
-                                            size={24}
-                                            color={"green"}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
+                                {!displayOnly && (
+                                    <View style={styles.cartControls}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                dispatch(removeItem(product))
+                                            }
+                                        >
+                                            <Ionicons
+                                                name="remove-circle"
+                                                size={24}
+                                                color={"red"}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.qtyText}>
+                                            quantity: {count}
+                                        </Text>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                dispatch(addItem(product))
+                                            }
+                                        >
+                                            <Ionicons
+                                                name="add-circle"
+                                                size={24}
+                                                color={"green"}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                )}
                             </View>
                         </View>
                     </View>
@@ -126,6 +133,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 40,
+    },
+    fetchedDetails: {
+        flexDirection: "row",
+        gap: 10,
     },
     qtyText: {
         fontSize: "18",

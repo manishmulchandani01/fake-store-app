@@ -9,23 +9,26 @@ import {
 
 import { ScreenTitle } from "../components/ScreenTitle";
 import { useState, useEffect } from "react";
+import { getCategories } from "../../datamodel/categories";
 
 export const Home = ({ navigation }) => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch("https://fakestoreapi.com/products/categories")
-            .then((res) => res.json())
-            .then((data) => {
+        const fetchCategories = async () => {
+            setLoading(true);
+            try {
+                const data = await getCategories();
                 setCategories(data);
                 setLoading(false);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error(error);
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchCategories();
     }, []);
 
     if (loading) {
@@ -37,7 +40,7 @@ export const Home = ({ navigation }) => {
     }
     return (
         <View style={styles.container}>
-            <ScreenTitle label={"Categories"}></ScreenTitle>
+            <ScreenTitle label={"Product Categories"}></ScreenTitle>
             <FlatList
                 style={styles.flatListContainer}
                 data={categories}
@@ -55,6 +58,7 @@ export const Home = ({ navigation }) => {
                     </TouchableOpacity>
                 )}
             />
+            <Text style={styles.itemTitle}>Developed by Manish Kumar</Text>
         </View>
     );
 };
